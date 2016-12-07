@@ -25,13 +25,15 @@ public class UserMealsUtil {
                 new UserMeal(LocalDateTime.of(2015, Month.MAY, 31,20,0), "Ужин", 510)
         );
         List<UserMealWithExceed> list1 = getFilteredWithExceeded(mealList, LocalTime.of(7, 0), LocalTime.of(12,0), 2000);
-        System.out.println("Метод 1. Через циклы:");
+        System.out.println("Method 1. Loops:");
         for(UserMealWithExceed m1 : list1){
-        System.out.println(m1.getDescription() + " - " + m1.getCalories() + " калорий. Превышение дневной нормы: " + m1.isExceed());}
+            System.out.println(m1);
+        }
         List<UserMealWithExceed> list2 = getFilteredWithExceededStream(mealList, LocalTime.of(7, 0), LocalTime.of(12,0), 2000);
-        System.out.println("Метод 2. Через стрим:");
+        System.out.println("Method 2. Stream:");
         for(UserMealWithExceed m2 : list2){
-        System.out.println(m2.getDescription() + " - " + m2.getCalories() + " калорий. Превышение дневной нормы: " + m2.isExceed());}
+            System.out.println(m2);
+        }
     }
 
     public static List<UserMealWithExceed>  getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
