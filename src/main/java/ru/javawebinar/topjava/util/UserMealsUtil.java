@@ -26,14 +26,11 @@ public class UserMealsUtil {
         );
         List<UserMealWithExceed> list1 = getFilteredWithExceeded(mealList, LocalTime.of(7, 0), LocalTime.of(12,0), 2000);
         System.out.println("Method 1. Loops:");
-        for(UserMealWithExceed m1 : list1){
-            System.out.println(m1);
-        }
+        list1.forEach(System.out::println);
+
         List<UserMealWithExceed> list2 = getFilteredWithExceededStream(mealList, LocalTime.of(7, 0), LocalTime.of(12,0), 2000);
         System.out.println("Method 2. Stream:");
-        for(UserMealWithExceed m2 : list2){
-            System.out.println(m2);
-        }
+        list2.forEach(System.out::println);
     }
 
     public static List<UserMealWithExceed>  getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
