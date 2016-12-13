@@ -12,14 +12,18 @@
         <th>Time</th>
         <th>Description</th>
         <th>Calories</th>
+        <th colspan=2>Action</th>
     </tr>
-<c:forEach var="list" items="${list}">
-    <tr style="background-color: <c:out value="${list.exceed ? 'red' : 'green'}"/>">
-        <td><c:out value="${TimeUtil.formatLocalDateTime(list.dateTime)}"/></td>
-        <th>${list.description}</th>
-        <th>${list.calories}</th>
+<c:forEach var="meals" items="${meals}">
+    <tr style="background-color: <c:out value="${meals.exceed ? 'red' : 'green'}"/>">
+        <td><c:out value="${TimeUtil.formatLocalDateTime(meals.dateTime)}"/></td>
+        <td><c:out value="${meals.description}"/></td>
+        <td><c:out value="${meals.calories}"/></td>
+        <td><a href="meals?action=edit&mealId=<c:out value="${meals.id}"/>">Edit</a></td>
+        <td><a href="meals?action=delete&mealId=<c:out value="${meals.id}"/>">Delete</a></td>
     </tr>
 </c:forEach>
 </table>
+<p><a href="meals?action=create">Create Meal</a></p>
 </body>
 </html>
