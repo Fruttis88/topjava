@@ -2,7 +2,7 @@ package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
 import ru.javawebinar.topjava.dao.MealDao;
-import ru.javawebinar.topjava.dao.MealDaoImpl;
+import ru.javawebinar.topjava.dao.MealCRUDDaoImpl;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealWithExceed;
 import ru.javawebinar.topjava.util.MealsUtil;
@@ -19,10 +19,10 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
 
-    private static final String LIST_MEAL = "meals.jsp";
-    private static final String CREATE_OR_EDIT = "editMeal.jsp";
+    private static final String LIST_MEAL = "/meals.jsp";
+    private static final String CREATE_OR_EDIT = "/editMeal.jsp";
     private static final Logger LOG = getLogger(UserServlet.class);
-    private MealDao dao = new MealDaoImpl();
+    private MealDao dao = new MealCRUDDaoImpl();
 
 
     private List<MealWithExceed> getListWithExceed() {
@@ -79,15 +79,15 @@ public class MealServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         try {
-            LocalDateTime localDateTime = LocalDateTime.parse(request.getParameter("dateTime"));
+            LocalDateTime localDateTime = LocalDateTime.parse(request.getParameter("time"));
             String description = request.getParameter("description");
             int calories = Integer.valueOf(request.getParameter("calories"));
 
             Meal meal = new Meal(localDateTime, description, calories);
 
-            int id = Integer.parseInt(request.getParameter("id"));
+            Integer id = Integer.parseInt(request.getParameter("id") == null || request.getParameter("id").isEmpty() ? "-1" : request.getParameter("id"));
 
-            if (id == 0) {
+            if (id == -1) {
                 dao.createOrEdit(meal);
             } else {
                 meal.setId(Integer.valueOf(id));
@@ -96,8 +96,7 @@ public class MealServlet extends HttpServlet {
         } catch (Exception e) {
             LOG.error(e.toString());
         }
-//        request.setAttribute("meals", getListWithExceed());
-//        request.getRequestDispatcher(LIST_MEAL).forward(request, response);
+
         response.sendRedirect("meals");
     }
 }
