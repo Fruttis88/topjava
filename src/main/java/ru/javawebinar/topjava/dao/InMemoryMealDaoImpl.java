@@ -9,13 +9,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MealCRUDDaoImpl implements MealDao {
+public class InMemoryMealDaoImpl implements MealDao {
 
     private Map<Integer, Meal> map = new ConcurrentHashMap<>();
     private List<Meal> listOfMeals = MealsUtil.createMealList();
     AtomicInteger idGen = new AtomicInteger(0);
 
-    public MealCRUDDaoImpl() {
+    public InMemoryMealDaoImpl() {
         for (Meal list : listOfMeals) {
             createOrEdit(list);
         }

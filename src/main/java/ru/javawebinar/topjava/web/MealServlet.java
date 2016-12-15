@@ -1,10 +1,9 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
+import ru.javawebinar.topjava.dao.InMemoryMealDaoImpl;
 import ru.javawebinar.topjava.dao.MealDao;
-import ru.javawebinar.topjava.dao.MealCRUDDaoImpl;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.model.MealWithExceed;
 import ru.javawebinar.topjava.util.MealsUtil;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
@@ -22,12 +20,8 @@ public class MealServlet extends HttpServlet {
     private static final String LIST_MEAL = "/meals.jsp";
     private static final String CREATE_OR_EDIT = "/editMeal.jsp";
     private static final Logger LOG = getLogger(UserServlet.class);
-    private MealDao dao = new MealCRUDDaoImpl();
+    private MealDao dao = new InMemoryMealDaoImpl();
 
-
-    private List<MealWithExceed> getListWithExceed() {
-        return MealsUtil.getFilteredWithExceeded(dao.getAll(), LocalTime.MIN, LocalTime.MAX, 2000);
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -67,7 +61,7 @@ public class MealServlet extends HttpServlet {
                     return;
             }
         } else {
-            request.setAttribute("meals", getListWithExceed());
+            request.setAttribute("meals", MealsUtil.getFilteredWithExceeded(dao.getAll(), LocalTime.MIN, LocalTime.MAX, 2000));
             request.getRequestDispatcher(LIST_MEAL).forward(request, response);
         }
 

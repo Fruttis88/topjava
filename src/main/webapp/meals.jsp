@@ -8,7 +8,7 @@
 </head>
 <body>
 <table>
-    <tr style="background-color: azure">
+    <tr style="background-color: #3a87ad">
         <th>Time</th>
         <th>Description</th>
         <th>Calories</th>
@@ -19,11 +19,11 @@
         <td><c:out value="${TimeUtil.formatLocalDateTime(meals.dateTime)}"/></td>
         <td><c:out value="${meals.description}"/></td>
         <td><c:out value="${meals.calories}"/></td>
-        <td><a href="meals?action=edit&mealId=<c:out value="${meals.id}"/>">Edit</a></td>
-        <td><a href="meals?action=delete&mealId=<c:out value="${meals.id}"/>">Delete</a></td>
+        <td><a style="color: yellow" href="meals?action=edit&mealId=<c:out value="${meals.id}"/>">Edit</a></td>
+        <td><a style="color: yellow" href="meals?action=delete&mealId=<c:out value="${meals.id}"/>">Delete</a></td>
     </tr>
 </c:forEach>
 </table>
-<p><a href="meals?action=create">Create Meal</a></p>
+<p><a style="color: darkblue" href="meals?action=create">Create Meal</a></p>
 </body>
 </html>
