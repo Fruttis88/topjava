@@ -15,6 +15,7 @@
         <th colspan=2>Action</th>
     </tr>
 <c:forEach var="meals" items="${meals}">
+    <jsp:useBean id="meals" scope="page" type="ru.javawebinar.topjava.model.MealWithExceed"/>
     <tr style="background-color: <c:out value="${meals.exceed ? 'red' : 'green'}"/>">
         <td><c:out value="${TimeUtil.formatLocalDateTime(meals.dateTime)}"/></td>
         <td><c:out value="${meals.description}"/></td>

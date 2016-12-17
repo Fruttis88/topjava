@@ -5,7 +5,7 @@ import ru.javawebinar.topjava.dao.InMemoryMealDaoImpl;
 import ru.javawebinar.topjava.dao.MealDao;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.MealsUtil;
-import javax.servlet.RequestDispatcher;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
@@ -26,7 +27,6 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String forward = "";
         String action = request.getParameter("action");
 
 
@@ -34,14 +34,14 @@ public class MealServlet extends HttpServlet {
             switch (action.toLowerCase()) {
                 case "create":
                     LOG.debug("Creating new meal");
-                    forward = CREATE_OR_EDIT;
+                    request.getRequestDispatcher(CREATE_OR_EDIT).forward(request, response);
                     break;
                 case "edit":
                     try {
-                        forward = CREATE_OR_EDIT;
                         Meal meal = dao.getById(Integer.parseInt(request.getParameter("mealId")));
                         LOG.debug("Edit meal " + meal);
                         request.setAttribute("meal", meal);
+                        request.getRequestDispatcher(CREATE_OR_EDIT).forward(request, response);
                     } catch (Exception e) {
                         LOG.error("Error when editing meal " + e.toString());
                         response.sendRedirect("meals");
@@ -61,12 +61,10 @@ public class MealServlet extends HttpServlet {
                     return;
             }
         } else {
+            LOG.info("getAll");
             request.setAttribute("meals", MealsUtil.getFilteredWithExceeded(dao.getAll(), LocalTime.MIN, LocalTime.MAX, 2000));
             request.getRequestDispatcher(LIST_MEAL).forward(request, response);
         }
-
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
-        requestDispatcher.forward(request, response);
     }
 
     @Override
@@ -90,7 +88,6 @@ public class MealServlet extends HttpServlet {
         } catch (Exception e) {
             LOG.error(e.toString());
         }
-
         response.sendRedirect("meals");
     }
 }
