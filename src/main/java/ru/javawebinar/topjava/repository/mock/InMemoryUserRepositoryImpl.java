@@ -49,10 +49,8 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
         LOG.info("delete " + id);
         try{
         repository.remove(id);
-            LOG.debug("Removing successful");
             return true;
         } catch (Exception e){
-            LOG.debug("Can`t remove");
             return false;
         }
     }
@@ -78,6 +76,7 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
                 currentUser = map.getValue();
             }
         }
+//        сделать через стрим
         return currentUser;
     }
 

@@ -3,10 +3,6 @@ package ru.javawebinar.topjava.util;
 
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
-/**
- * User: gkislin
- * Date: 14.05.2014
- */
 public class ValidationUtil {
     public static void checkNotFoundWithId(boolean found, int id) {
         checkNotFound(found, "id=" + id);
