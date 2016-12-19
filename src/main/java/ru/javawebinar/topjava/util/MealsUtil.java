@@ -10,10 +10,7 @@ import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * GKislin
- * 31.05.2015.
- */
+
 public class MealsUtil {
     public static final List<Meal> MEALS = Arrays.asList(
             new Meal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),

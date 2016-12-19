@@ -6,10 +6,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
 
-/**
- * User: gkislin
- * Date: 22.08.2014
- */
+
 public class User extends NamedEntity {
 
     private String email;
@@ -82,6 +79,10 @@ public class User extends NamedEntity {
 
     public String getPassword() {
         return password;
+    }
+
+    public boolean isNew(){
+        return id == null;
     }
 
     @Override
