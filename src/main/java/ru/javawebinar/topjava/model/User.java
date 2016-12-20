@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
 
-
 public class User extends NamedEntity {
 
     private String email;

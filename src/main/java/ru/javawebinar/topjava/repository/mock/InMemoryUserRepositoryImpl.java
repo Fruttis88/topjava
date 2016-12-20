@@ -6,9 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 import ru.javawebinar.topjava.util.UsersUtil;
-import sun.rmi.runtime.Log;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +28,7 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     @Override
     public User save(User user) {
         LOG.info("save " + user);
-        if (user.isNew()){
+        if (user.isNew()) {
             user.setId(count.incrementAndGet());
         }
         repository.put(user.getId(), user);
@@ -40,10 +38,10 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     @Override
     public boolean delete(int id) {
         LOG.info("delete " + id);
-        try{
-        repository.remove(id);
+        try {
+            repository.remove(id);
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -63,13 +61,9 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     @Override
     public User getByEmail(String email) {
         LOG.info("getByEmail " + email);
-        User currentUser = null;
-        for (Map.Entry<Integer, User> map : repository.entrySet()){
-            if (map.getValue().getEmail().equals(email)){
-                currentUser = map.getValue();
-            }
-        }
-//        сделать через стрим
+        User currentUser = repository.values().stream()
+                .filter(user -> user.getEmail().equals(email))
+                .findAny().orElse(null);
         return currentUser;
     }
 

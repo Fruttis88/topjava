@@ -21,7 +21,6 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
         MealsUtil.MEALS.forEach(meal -> createOrEdit(meal, 1));
     }
 
-
     @Override
     public Meal createOrEdit(Meal meal, int userId) {
         if (meal.isNew()) {

@@ -20,12 +20,7 @@ public class MealRestController {
 
     @Autowired
     private MealService service;
-//    public static void main(String[] args) {
-//        MealRestController in = new MealRestController();
-//        List<MealWithExceed> list = in.getAll();
-//        List<Meal> list = MealsUtil.MEALS;
-//        in.repository.forEach((id, val) -> System.out.println(val));
-//    }
+
     public List<MealWithExceed> getAll(){
         LOG.info("getAll fo userId " + String.valueOf(AuthorizedUser.id()));
         return MealsUtil.getWithExceeded(service.getAll(AuthorizedUser.id()), AuthorizedUser.getCaloriesPerDay());
