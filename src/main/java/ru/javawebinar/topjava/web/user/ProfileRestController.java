@@ -4,7 +4,6 @@ import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.User;
 
-import java.util.List;
 
 @Controller
 public class ProfileRestController extends AbstractUserController {

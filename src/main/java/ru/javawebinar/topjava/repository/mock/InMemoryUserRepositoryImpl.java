@@ -3,13 +3,12 @@ package ru.javawebinar.topjava.repository.mock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import ru.javawebinar.topjava.model.NamedEntity;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 import ru.javawebinar.topjava.util.UsersUtil;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -21,7 +20,6 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     private AtomicInteger count = new AtomicInteger(0);
 
     {
-        UsersUtil.USERS.sort(Comparator.comparing(user -> user.getName()));
         UsersUtil.USERS.forEach(this::save);
     }
 
@@ -55,16 +53,17 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     @Override
     public List<User> getAll() {
         LOG.info("getAll");
-        return (List<User>) repository.values();
+        List<User> list = new ArrayList<>(repository.values());
+        Collections.sort(list, (user1, user2) -> user1.getName().compareTo(user2.getName()));
+        return Optional.of(list).orElseGet(Collections::emptyList);
     }
 
     @Override
     public User getByEmail(String email) {
         LOG.info("getByEmail " + email);
-        User currentUser = repository.values().stream()
+        return repository.values().stream()
                 .filter(user -> user.getEmail().equals(email))
                 .findAny().orElse(null);
-        return currentUser;
     }
 
 }
