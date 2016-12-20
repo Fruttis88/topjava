@@ -25,6 +25,9 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     public Meal createOrEdit(Meal meal, int userId) {
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
+        } else {
+            if (!repository.get(meal.getId()).getUserId().equals(userId))
+                return null;
         }
         meal.setUserId(userId);
         repository.put(meal.getId(), meal);
@@ -34,13 +37,10 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     @Override
     public boolean delete(int id, int userId) {
         if(repository.get(id).getUserId().equals(userId)){
-        try {
             repository.remove(id);
             return true;
-        } catch (Exception e) {
+        } else {
             return false;
-        }} else {
-            throw new NotFoundException("This user hasn`t such meals");
         }
     }
 
@@ -49,7 +49,7 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
         if (repository.get(id).getUserId().equals(userId)){
         return repository.get(id);
         } else {
-            throw new NotFoundException("This user hasn`t such meals");
+            return null;
         }
     }
 
