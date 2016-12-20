@@ -2,6 +2,8 @@ package ru.javawebinar.topjava.web.meal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
@@ -12,14 +14,20 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-
+@Controller
 public class MealRestController {
     protected final Logger LOG = LoggerFactory.getLogger(getClass());
 
+    @Autowired
     private MealService service;
-
+//    public static void main(String[] args) {
+//        MealRestController in = new MealRestController();
+//        List<MealWithExceed> list = in.getAll();
+//        List<Meal> list = MealsUtil.MEALS;
+//        in.repository.forEach((id, val) -> System.out.println(val));
+//    }
     public List<MealWithExceed> getAll(){
-        LOG.info("getAll");
+        LOG.info("getAll fo userId " + String.valueOf(AuthorizedUser.id()));
         return MealsUtil.getWithExceeded(service.getAll(AuthorizedUser.id()), AuthorizedUser.getCaloriesPerDay());
     }
 
@@ -37,12 +45,12 @@ public class MealRestController {
         meal.setId(null);
         meal.setUserId(AuthorizedUser.id());
         LOG.info("create " + meal);
-        return service.create(meal);
+        return service.createOrEdit(meal, AuthorizedUser.id());
     }
 
     public Meal edit(Meal meal){
         LOG.info("edit " + meal);
-        return service.edit(meal, AuthorizedUser.id());
+        return service.createOrEdit(meal, AuthorizedUser.id());
     }
 
     public void delete(int id) {

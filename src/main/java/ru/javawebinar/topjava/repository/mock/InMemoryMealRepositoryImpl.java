@@ -1,32 +1,33 @@
 package ru.javawebinar.topjava.repository.mock;
 
+import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
-
+@Repository
 public class InMemoryMealRepositoryImpl implements MealRepository {
     private Map<Integer, Meal> repository = new ConcurrentHashMap<>();
     private AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.MEALS.forEach(this::createOrEdit);
+        MealsUtil.MEALS.forEach(meal -> createOrEdit(meal, 1));
     }
 
+
     @Override
-    public Meal createOrEdit(Meal meal) {
+    public Meal createOrEdit(Meal meal, int userId) {
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
         }
+        meal.setUserId(userId);
         repository.put(meal.getId(), meal);
         return meal;
     }
@@ -55,26 +56,18 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
 
     @Override
     public Collection<Meal> getAll(int userId) {
-        List<Meal> currentUserMeals = null;
-        for (Map.Entry<Integer, Meal> map: repository.entrySet()){
-            if(map.getValue().getUserId().equals(userId)){
-                currentUserMeals.add(map.getValue());
-            }
-        }
-        currentUserMeals.sort(Comparator.comparing(meal -> meal.getDateTime()));
-        return currentUserMeals;
+        return repository.values().stream()
+                .filter(meal -> meal.getUserId().equals(userId))
+                .sorted((meal1, meal2) -> meal2.getDateTime().compareTo(meal1.getDateTime()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Collection<Meal> getAllBetween(int userId, LocalDate startDate, LocalDate endDate) {
-        List<Meal> currentUserMeals = null;
-        for (Map.Entry<Integer, Meal> map: repository.entrySet()){
-            if(map.getValue().getUserId().equals(userId) && (map.getValue().getDate().compareTo(startDate) >= 0 && map.getValue().getDate().compareTo(endDate) <= 0)){
-                currentUserMeals.add(map.getValue());
-            }
-        }
-        currentUserMeals.sort(Comparator.comparing(meal -> meal.getDateTime()));
-        return currentUserMeals;
+        return repository.values().stream()
+                .filter(meal -> (startDate == null || meal.getDate().compareTo(startDate) >= 0)&&(endDate == null || meal.getDate().compareTo(endDate) <= 0))
+                .filter(meal -> meal.getUserId().equals(userId))
+                .sorted((meal1, meal2) -> meal2.getDateTime().compareTo(meal1.getDateTime()))
+                .collect(Collectors.toList());
     }
 }
-

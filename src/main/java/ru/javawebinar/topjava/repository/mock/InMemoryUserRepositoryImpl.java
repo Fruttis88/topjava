@@ -27,13 +27,6 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
         UsersUtil.USERS.forEach(this::save);
     }
 
-    public static void main(String[] args) {
-        InMemoryUserRepositoryImpl in = new InMemoryUserRepositoryImpl();
-        List<User> list = UsersUtil.USERS;
-        in.repository.forEach((id, val) -> System.out.println(val));
-        in.getByEmail("eUser");
-    }
-
     @Override
     public User save(User user) {
         LOG.info("save " + user);

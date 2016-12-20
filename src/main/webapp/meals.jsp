@@ -46,6 +46,24 @@
             </tr>
         </c:forEach>
     </table>
+    <form method="get" action="meals">
+        <input type="hidden" name="action" value="filterMeals">
+        <table cellpadding="4">
+            <tr>
+                <td>Begin Date:</td>
+                <td><input type="date" name="startDate"></td>
+                <td>End Date:</td>
+                <td><input type="date" name="endDate"></td>
+            </tr>
+            <tr>
+                <td>Begin Time:</td>
+                <td><input type="time" name="startTime"></td>
+                <td>End Time:</td>
+                <td><input type="time" name="endTime"></td>
+            </tr>
+        </table>
+        <button type="submit">DateTime Filter</button>
+    </form>
 </section>
 </body>
 </html>

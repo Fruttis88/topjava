@@ -7,7 +7,8 @@ import java.util.Collection;
 
 
 public interface MealRepository {
-    Meal createOrEdit(Meal Meal);
+
+    Meal createOrEdit(Meal Meal, int userId);
 
     boolean delete(int id, int userId);
 

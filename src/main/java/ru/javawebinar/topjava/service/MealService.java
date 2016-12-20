@@ -9,9 +9,7 @@ import java.util.Collection;
 
 public interface MealService {
 
-    Meal create(Meal meal);
-
-    Meal edit(Meal meal, int userId);
+    Meal createOrEdit(Meal meal, int userId);
 
     void delete(int id, int userId) throws NotFoundException;
 

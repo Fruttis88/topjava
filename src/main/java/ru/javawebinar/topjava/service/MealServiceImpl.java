@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -10,24 +12,17 @@ import java.util.Collection;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
-
+@Service
 public class MealServiceImpl implements MealService {
 
+    @Autowired
     private MealRepository repository;
 
     @Override
-    public Meal create(Meal meal) {
-        return repository.createOrEdit(meal);
+    public Meal createOrEdit(Meal meal, int userId) {
+        return checkNotFound(repository.createOrEdit(meal, userId), "meal= " + meal + ", userId= " + userId);
     }
 
-    @Override
-    public Meal edit(Meal meal, int userId) throws NotFoundException {
-        if (meal.getUserId().equals(userId)){
-        return checkNotFound(repository.createOrEdit(meal), "this meal");}
-        else {
-            throw new NotFoundException("Julik detected! Put your hands on the yellow circles!!!");
-        }
-    }
 
     @Override
     public void delete(int id, int userId) throws NotFoundException {
