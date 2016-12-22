@@ -41,8 +41,8 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     @Override
     public List<User> getAll() {
         List<User> list = new ArrayList<>(repository.values());
-        Collections.sort(list, (user1, user2) -> user1.getName().compareTo(user2.getName()));
-        return Optional.of(list).orElseGet(Collections::emptyList);
+        Collections.sort(list, Comparator.comparing(User::getName));
+        return list;
     }
 
     @Override
