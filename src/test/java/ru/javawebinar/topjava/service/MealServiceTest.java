@@ -44,8 +44,8 @@ public class MealServiceTest {
 
     @Test
     public void testDelete() throws Exception {
-        service.delete(MEAL8_ID, ADMIN_ID);
-        MATCHER.assertCollectionEquals(Arrays.asList(MEAL9, MEAL7), service.getAll(ADMIN_ID));
+        service.delete(MEALADD2_ID, ADMIN_ID);
+        MATCHER.assertCollectionEquals(Arrays.asList(MEALADD3, MEALADD1), service.getAll(ADMIN_ID));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class MealServiceTest {
     @Test
     public void testGetAll() throws Exception {
         Collection<Meal> all = service.getAll(ADMIN_ID);
-        MATCHER.assertCollectionEquals(Arrays.asList(MEAL9, MEAL8, MEAL7), all);
+        MATCHER.assertCollectionEquals(Arrays.asList(MEALADD3, MEALADD2, MEALADD1), all);
     }
 
     @Test
@@ -80,10 +80,8 @@ public class MealServiceTest {
         Meal newMeal = new Meal(null, LocalDateTime.now(), "NewMeal", 7777);
         Meal created = service.save(newMeal, ADMIN_ID);
         newMeal.setId(created.getId());
-        MATCHER.assertCollectionEquals(Arrays.asList(newMeal, MEAL9, MEAL8, MEAL7), service.getAll(ADMIN_ID));
+        MATCHER.assertCollectionEquals(Arrays.asList(newMeal, MEALADD3, MEALADD2, MEALADD1), service.getAll(ADMIN_ID));
     }
-
-
 
 
     @Test(expected = NotFoundException.class)
@@ -93,8 +91,9 @@ public class MealServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void testGetWrongUser() throws Exception {
-        service.get(MEAL8_ID, USER_ID);
+        service.get(MEALADD2_ID, USER_ID);
     }
+
     @Test(expected = NotFoundException.class)
     public void testDeleteNotFound() {
         service.delete(1, ADMIN_ID);
@@ -102,10 +101,16 @@ public class MealServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void testDeleteWrongUser() {
-        service.delete(MEAL9_ID, USER_ID);
+        service.delete(MEALADD3_ID, USER_ID);
     }
+
     @Test(expected = NotFoundException.class)
     public void testUpdateWrongUser() throws Exception {
-        service.update(new Meal(MEAL1), ADMIN_ID);
+        service.update(MEAL1, ADMIN_ID);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void testUpdateAlienMeal() throws Exception {
+        service.update(new Meal(MEALADD2), USER_ID);
     }
 }
