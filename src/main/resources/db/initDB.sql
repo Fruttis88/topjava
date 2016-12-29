@@ -36,4 +36,3 @@ CREATE TABLE meals
 );
 
 CREATE INDEX user_id_date_time_idx ON meals(user_id, dateTime);
-CREATE INDEX user_id_index ON meals(user_id);
