@@ -5,7 +5,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.Stopwatch;
-import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -16,7 +15,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
@@ -25,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.slf4j.LoggerFactory.getLogger;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
@@ -46,7 +43,7 @@ public class MealServiceTest {
 
         @Override
         protected void finished(long nanos, Description description) {
-            System.out.println(description + "finished at " + nanos + " nanoseconds");
+            LOG.info(description + "finished at " + nanos + " nanoseconds");
             results.add(description + "finished at " + nanos + " nanoseconds");
         }
     };
@@ -58,7 +55,7 @@ public class MealServiceTest {
     private MealService service;
 
     @AfterClass
-    public static void  afterClass(){
+    public static void afterClass() {
         results.forEach(LOG::info);
     }
 
