@@ -43,8 +43,8 @@ public class MealServiceTest {
 
         @Override
         protected void finished(long nanos, Description description) {
-            LOG.info(description + "finished at " + nanos + " nanoseconds");
-            results.add(description + "finished at " + nanos + " nanoseconds");
+            LOG.info(description.getMethodName() + " finished at " + nanos + " nanoseconds");
+            results.add(description.getMethodName() + " finished at " + nanos + " nanoseconds");
         }
     };
 
