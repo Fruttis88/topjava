@@ -30,7 +30,7 @@ public abstract class UserServiceTest extends ServiceTest {
     public void setUp() throws Exception {
         service.evictCache();
     }
-        
+
     @Override
     public void testSave() throws Exception {
         User newUser = new User(null, "New", "new@gmail.com", "newPass", 1555, false, Collections.singleton(Role.ROLE_USER));
