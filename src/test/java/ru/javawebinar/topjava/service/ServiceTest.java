@@ -86,9 +86,4 @@ public abstract class ServiceTest {
     @Test
     public void testUpdateNotFound() throws Exception {}
 
-//    @Test
-//    public void testGetMeals() throws Exception {}
-//
-//    @Test
-//    public void testUser() throws Exception {}
 }
