@@ -29,10 +29,6 @@ public class Meal extends BaseEntity {
     public static final String DELETE = "Meal.delete";
     public static final String GET_BETWEEN = "Meal.getBetween";
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
     @Column(name = "date_time", nullable = false)
     @NotNull
     private LocalDateTime dateTime;

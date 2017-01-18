@@ -89,6 +89,11 @@ public class JdbcMealRepositoryImpl implements MealRepository {
                 ROW_MAPPER, userId, getLocalDateTime(startDate), getLocalDateTime(endDate));
     }
 
+    @Override
+    public Meal getWithUser(int id, int userId) {
+        throw  new UnsupportedOperationException();
+    }
+
 
     public <T> T getLocalDateTime(LocalDateTime localDateTime){
         return (T)localDateTime;

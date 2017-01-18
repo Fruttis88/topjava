@@ -65,6 +65,11 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public User getWithMeal(int id) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public User getByEmail(String email) {
         return repository.values().stream()
                 .filter(u -> email.equals(u.getEmail()))
