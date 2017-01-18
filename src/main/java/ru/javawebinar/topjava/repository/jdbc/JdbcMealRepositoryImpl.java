@@ -90,7 +90,7 @@ public class JdbcMealRepositoryImpl implements MealRepository {
     }
 
 
-    public Object getLocalDateTime(LocalDateTime localDateTime){
-        return localDateTime;
+    public <T> T getLocalDateTime(LocalDateTime localDateTime){
+        return (T)localDateTime;
     }
 }

@@ -6,6 +6,4 @@ import ru.javawebinar.topjava.service.UserServiceTest;
 
 @ActiveProfiles(Profiles.DATAJPA)
 public class DataJpaUserServiceTest extends UserServiceTest {
-    //    @Test
-//    User getWithMeals(int id) throws Exception {}
 }

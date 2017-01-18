@@ -18,7 +18,7 @@ public class HsqlJdbcMealRepositoryImpl extends JdbcMealRepositoryImpl {
     }
 
     @Override
-    public Object getLocalDateTime(LocalDateTime localDateTime) {
-        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    public <T> T getLocalDateTime(LocalDateTime localDateTime) {
+        return (T)Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 }
