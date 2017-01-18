@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
@@ -46,7 +45,7 @@ public class JdbcMealRepositoryImpl implements MealRepository {
                 .addValue("id", meal.getId())
                 .addValue("description", meal.getDescription())
                 .addValue("calories", meal.getCalories())
-                .addValue("date_time", getLocalDateTime(meal.getDateTime()))
+                .addValue("date_time", convertLocalDateTime(meal.getDateTime()))
                 .addValue("user_id", userId);
 
         if (meal.isNew()) {
@@ -86,16 +85,11 @@ public class JdbcMealRepositoryImpl implements MealRepository {
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
         return jdbcTemplate.query(
                 "SELECT * FROM meals WHERE user_id=?  AND date_time BETWEEN  ? AND ? ORDER BY date_time DESC",
-                ROW_MAPPER, userId, getLocalDateTime(startDate), getLocalDateTime(endDate));
-    }
-
-    @Override
-    public Meal getWithUser(int id, int userId) {
-        throw  new UnsupportedOperationException();
+                ROW_MAPPER, userId, convertLocalDateTime(startDate), convertLocalDateTime(endDate));
     }
 
 
-    public <T> T getLocalDateTime(LocalDateTime localDateTime){
+    public <T> T convertLocalDateTime(LocalDateTime localDateTime){
         return (T)localDateTime;
     }
 }

@@ -78,9 +78,5 @@ public abstract class MealServiceTest extends ServiceTest {
                 service.getBetweenDates(LocalDate.of(2015, Month.MAY, 30), LocalDate.of(2015, Month.MAY, 30), USER_ID));
     }
 
-    @Test
-    public void testGetWithUser() throws Exception {
-        MATCHER.assertEquals(MEAL4, service.getWithUser(MEAL1_ID + 3, USER_ID));
-        UserTestData.MATCHER.assertEquals(USER, service.getWithUser(MEAL1_ID + 3, USER_ID).getUser());
-    }
+
 }
