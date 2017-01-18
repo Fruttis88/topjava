@@ -24,7 +24,7 @@ public abstract class UserServiceTest extends ServiceTest {
         service.evictCache();
     }
 
-    @Override
+    @Test
     public void testSave() throws Exception {
         User newUser = new User(null, "New", "new@gmail.com", "newPass", 1555, false, Collections.singleton(Role.ROLE_USER));
         User created = service.save(newUser);
@@ -33,48 +33,45 @@ public abstract class UserServiceTest extends ServiceTest {
     }
 
     @Test(expected = DataAccessException.class)
-    @Override
     public void testDuplicateMailSave() throws Exception {
         service.save(new User(null, "Duplicate", "user@yandex.ru", "newPass", Role.ROLE_USER));
     }
 
-    @Override
+    @Test
     public void testDelete() throws Exception {
         service.delete(USER_ID);
         MATCHER.assertCollectionEquals(Collections.singletonList(ADMIN), service.getAll());
     }
 
     @Test(expected = NotFoundException.class)
-    @Override
     public void testDeleteNotFound() throws Exception {
         service.delete(1);
     }
 
-    @Override
+    @Test
     public void testGet() throws Exception {
         User user = service.get(USER_ID);
         MATCHER.assertEquals(USER, user);
     }
 
     @Test(expected = NotFoundException.class)
-    @Override
     public void testGetNotFound() throws Exception {
         service.get(1);
     }
 
-    @Override
+    @Test
     public void testGetByEmail() throws Exception {
         User user = service.getByEmail("user@yandex.ru");
         MATCHER.assertEquals(USER, user);
     }
 
-    @Override
+    @Test
     public void testGetAll() throws Exception {
         Collection<User> all = service.getAll();
         MATCHER.assertCollectionEquals(Arrays.asList(ADMIN, USER), all);
     }
 
-    @Override
+    @Test
     public void testUpdate() throws Exception {
         User updated = new User(USER);
         updated.setName("UpdatedName");

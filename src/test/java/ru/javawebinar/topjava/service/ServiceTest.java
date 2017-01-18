@@ -10,10 +10,12 @@ import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import ru.javawebinar.topjava.Profiles;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
+@ActiveProfiles(Profiles.ACTIVE_DB)
 public abstract class ServiceTest {
 
     @Rule
@@ -49,41 +52,4 @@ public abstract class ServiceTest {
                 results +
                 "---------------------------------\n");
     }
-
-    @Before
-    public void setUp() throws Exception {}
-
-    @Test
-    public void testSave() throws Exception {}
-
-    @Test
-    public void testDuplicateMailSave() throws Exception {}
-
-    @Test
-    public void testDelete() throws Exception {}
-
-    @Test
-    public void testDeleteNotFound() throws Exception {}
-
-    @Test
-    public void testGet() throws Exception {}
-
-    @Test
-    public void testGetNotFound() throws Exception {}
-
-    @Test
-    public void testGetByEmail() throws Exception {}
-
-    @Test
-    public void testGetAll() throws Exception {}
-
-    @Test
-    public void testGetBetween() throws Exception {}
-
-    @Test
-    public void testUpdate() throws Exception {}
-
-    @Test
-    public void testUpdateNotFound() throws Exception {}
-
 }
