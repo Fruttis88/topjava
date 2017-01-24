@@ -18,10 +18,7 @@ import ru.javawebinar.topjava.repository.UserRepository;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -105,9 +102,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     @Override
     public List<User> getAll() {
         List<User> users = jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
-        SqlRowSet allRoles = jdbcTemplate.queryForRowSet("SELECT * FROM user_roles");
-        Set<Role> roles = jdbcTemplate.queryForList("SELECT role FROM user_roles", String.class).stream().map(Role::valueOf).collect(Collectors.toSet());
-        Map<Integer, Set<Role>> map = roles.stream().collect(Collectors.groupingBy(allRoles.getInt("user_id")));
+//        Map<Integer, Set<Role>> map = roles.stream().collect(Collectors.groupingBy());
         return null;
 
     }
