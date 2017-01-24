@@ -10,12 +10,12 @@ import static ru.javawebinar.topjava.Profiles.JPA;
 
 @ActiveProfiles(JPA)
 public class JpaUserServiceTest extends AbstractUserServiceTest {
-    @Autowired
+    /*@Autowired
     protected JpaUtil jpaUtil;
 
     @Before
     public void setUp() throws Exception {
         service.evictCache();
         jpaUtil.clear2ndLevelHibernateCache();
-    }
+    }*/
 }

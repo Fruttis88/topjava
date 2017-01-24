@@ -16,14 +16,14 @@ import static ru.javawebinar.topjava.UserTestData.*;
 @ActiveProfiles(DATAJPA)
 public class DataJpaUserServiceTest extends AbstractUserServiceTest {
 
-    @Autowired
+    /*@Autowired
     protected JpaUtil jpaUtil;
 
     @Before
     public void setUp() throws Exception {
         service.evictCache();
         jpaUtil.clear2ndLevelHibernateCache();
-    }
+    }*/
 
     @Test
     public void testGetWithMeals() throws Exception {
