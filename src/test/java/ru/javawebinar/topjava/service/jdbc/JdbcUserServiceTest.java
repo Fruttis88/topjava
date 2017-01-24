@@ -12,4 +12,5 @@ public class JdbcUserServiceTest extends AbstractUserServiceTest {
     public void setUp() throws Exception {
         service.evictCache();
     }*/
+
 }

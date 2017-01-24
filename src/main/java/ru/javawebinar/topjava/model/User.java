@@ -113,6 +113,9 @@ public class User extends NamedEntity {
         this.enabled = enabled;
     }
 
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
     public int getCaloriesPerDay() {
         return caloriesPerDay;
     }
