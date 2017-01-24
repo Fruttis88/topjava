@@ -3,9 +3,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
-<jsp:include page="fragments/headTag.jsp"/>
+<jsp:include page="fragments/user/headTag.jsp"/>
 <body>
-<jsp:include page="fragments/bodyHeader.jsp"/>
+<jsp:include page="fragments/user/bodyHeader.jsp"/>
 
 <section>
     <h3><fmt:message key="users.title"/></h3>
@@ -33,6 +33,6 @@
         </c:forEach>
     </table>
 </section>
-<jsp:include page="fragments/footer.jsp"/>
+<jsp:include page="fragments/user/footer.jsp"/>
 </body>
 </html>

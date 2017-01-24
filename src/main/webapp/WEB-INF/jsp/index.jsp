@@ -3,9 +3,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
-<jsp:include page="fragments/headTag.jsp"/>
+<jsp:include page="fragments/user/headTag.jsp"/>
 <body>
-<jsp:include page="fragments/bodyHeader.jsp"/>
+<jsp:include page="fragments/user/bodyHeader.jsp"/>
 <section>
     <form method="post" action="users">
         <fmt:message key="app.login"/>: <select name="userId">
@@ -19,6 +19,6 @@
     <li><a href="meals"><fmt:message key="meals.title"/></a></li>
 </ul>
 </section>
-<jsp:include page="fragments/footer.jsp"/>
+<jsp:include page="fragments/user/footer.jsp"/>
 </body>
 </html>
