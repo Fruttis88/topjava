@@ -5,12 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
-import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.util.DateTimeUtil;
-import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,47 +16,37 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Objects;
 
-import static ru.javawebinar.topjava.util.ValidationUtil.checkIdConsistent;
-import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
-
 @Controller
-public class MealController {
-
-    @Autowired
-    private MealService service;
+public class MealController extends MealRestController {
 
     @RequestMapping(value = "/meals", method = RequestMethod.GET)
     public String meals(Model model) {
-        int userId = AuthorizedUser.id();
-        model.addAttribute(
-                "meals",
-                MealsUtil.getWithExceeded(service.getAll(userId), AuthorizedUser.getCaloriesPerDay())
-        );
+        model.addAttribute("meals", getAll());
         return "meals";
     }
+
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public String delete(HttpServletRequest request){
+    public String delete(HttpServletRequest request) {
         int id = getId(request);
-        int userId = AuthorizedUser.id();
-        service.delete(id, userId);
+        delete(id);
         return "redirect:meals";
     }
+
     @RequestMapping(value = "/update", method = RequestMethod.GET)
     public String update(HttpServletRequest request) {
-        int userId = AuthorizedUser.id();
-        final Meal meal = service.get(getId(request), userId);
-        request.setAttribute("meal", meal);
+        request.setAttribute("meal", get(getId(request)));
         return "meal";
     }
+
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String create(Model model){
+    public String create(Model model) {
         final Meal meal = new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000);
         model.addAttribute("meal", meal);
         return "meal";
     }
+
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save(HttpServletRequest request) throws UnsupportedEncodingException {
         request.setCharacterEncoding("UTF-8");
@@ -67,33 +54,22 @@ public class MealController {
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.valueOf(request.getParameter("calories")));
-        int userId = AuthorizedUser.id();
         if (request.getParameter("id").isEmpty()) {
-            checkNew(meal);
-            service.save(meal, userId);
+            create(meal);
         } else {
-            checkIdConsistent(meal, getId(request));
-            service.update(meal, userId);
+            update(meal, getId(request));
         }
         return "redirect:meals";
     }
+
     @RequestMapping(value = "/filter", method = RequestMethod.POST)
-    public String filter(HttpServletRequest request){
-        int userId = AuthorizedUser.id();
+    public String filter(HttpServletRequest request) {
         LocalDate startDate = DateTimeUtil.parseLocalDate(request.getParameter("startDate"));
         LocalDate endDate = DateTimeUtil.parseLocalDate(request.getParameter("endDate"));
         LocalTime startTime = DateTimeUtil.parseLocalTime(request.getParameter("startTime"));
         LocalTime endTime = DateTimeUtil.parseLocalTime(request.getParameter("endTime"));
 
-        List<MealWithExceed> list = MealsUtil.getFilteredWithExceeded(
-                service.getBetweenDates(
-                        startDate != null ? startDate : DateTimeUtil.MIN_DATE,
-                        endDate != null ? endDate : DateTimeUtil.MAX_DATE, userId),
-                startTime != null ? startTime : LocalTime.MIN,
-                endTime != null ? endTime : LocalTime.MAX,
-                AuthorizedUser.getCaloriesPerDay());
-
-        request.setAttribute("meals", list);
+        request.setAttribute("meals", getBetween(startDate, startTime, endDate, endTime));
         return "meals";
     }
 
