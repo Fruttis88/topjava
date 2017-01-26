@@ -83,21 +83,13 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     @Override
     public User get(int id) {
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE id=?", ROW_MAPPER, id);
-        User user = DataAccessUtils.singleResult(users);
-        Set<Role> roles = jdbcTemplate.queryForList("SELECT role FROM user_roles WHERE user_id = ?", String.class, user.getId())
-                .stream().map(Role::valueOf).collect(Collectors.toSet());
-        user.setRoles(roles);
-        return user;
+        return setRoles(DataAccessUtils.singleResult(users));
     }
 
     @Override
     public User getByEmail(String email) {
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
-        User user = DataAccessUtils.singleResult(users);
-        Set<Role> roles = jdbcTemplate.queryForList("SELECT role FROM user_roles WHERE user_id = ?", String.class, user.getId())
-                .stream().map(Role::valueOf).collect(Collectors.toSet());
-        user.setRoles(roles);
-        return user;
+        return setRoles(DataAccessUtils.singleResult(users));
     }
 
     @Override
@@ -149,6 +141,12 @@ public class JdbcUserRepositoryImpl implements UserRepository {
                 return roles.size();
             }
         });
+    }
+
+    private User setRoles(User user){
+        List<Role> roles = jdbcTemplate.query("SELECT role FROM user_roles WHERE user_id = ?", (rs, rowNum) -> Role.valueOf(rs.getString("role")), user.getId());
+        user.setRoles(roles);
+        return user;
     }
 }
 
