@@ -1,9 +1,10 @@
 package ru.javawebinar.topjava.repository.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.jdbc.core.*;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -15,9 +16,10 @@ import ru.javawebinar.topjava.repository.UserRepository;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -100,29 +102,33 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> getAll() {
-        List<User> users = jdbcTemplate.query("SELECT * FROM users LEFT JOIN user_roles ON users.id = user_roles.user_id ORDER BY name, email", new RowMapper<User>() {
-            @Override
-            public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-                User user = new User();
-                if (user == null) {
-                    user = new User();
-                    user.setName(rs.getString("name"));
-                    user.setEmail(rs.getString("email"));
-                    user.setPassword(rs.getString("password"));
-                    user.setCaloriesPerDay(rs.getInt("calories_per_day"));
-                    user.setEnabled(rs.getBoolean("enabled"));
+        List<User> users = jdbcTemplate.query("SELECT u.*, string_agg(r.role, ',') as roles FROM users u JOIN user_roles r ON u.id = r.user_id GROUP BY id ORDER BY name,email", ROW_MAPPER);
+        return users;
+    }
+    /*private class MyObjectExtractor implements ResultSetExtractor {
+
+        public Object extractData(ResultSet rs) throws SQLException, DataAccessException {
+            Map<Integer, User> map = new HashMap<Integer, User>();
+            User user = null;
+            while (rs.next()) {
+                Integer id = rs.getInt("id");
+                        user = map.get(id);
+                if(user == null){
+                    String email = rs.getString("email");
+                    String name = rs.getString("name");
+                    String password = rs.getString("password");
+                    Integer calories = rs.getInt("calories_per_day");
+                    Boolean enabled = rs.getBoolean("enabled");
+                    user = new User(id, name, email, password, calories, enabled, null);
+                    map.put(id, user);
                 }
                 Set<Role> roles = new TreeSet<Role>();
                 roles.add(Role.valueOf(rs.getString("role")));
                 user.setRoles(roles);
-                return null;
             }
-        });
-//        Map<Integer, Set<Role>> map = users.stream().collect(Collectors.groupingBy());
-//        users.forEach(user -> user.setRoles(map.get(user.getId())));
-        return null;
-    }
-
+            return new ArrayList<User>(map.values());
+        }
+    }*/
 
 
     public void insertBatch(int userId, List<Role> roles) {

@@ -29,7 +29,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Before
     public void setUp() throws Exception {
         service.evictCache();
-        if (context.getEnvironment().acceptsProfiles(Profiles.DATAJPA, Profiles.JPA) && context.getEnvironment().getActiveProfiles()!=null) {
+        if (context.getEnvironment().acceptsProfiles(Profiles.DATAJPA, Profiles.JPA)) {
             jpaUtil.clear2ndLevelHibernateCache();
         }
     }
