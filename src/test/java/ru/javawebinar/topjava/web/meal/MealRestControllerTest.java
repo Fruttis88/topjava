@@ -1,9 +1,11 @@
 package ru.javawebinar.topjava.web.meal;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import ru.javawebinar.topjava.TestUtil;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
@@ -22,6 +24,9 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 public class MealRestControllerTest extends AbstractControllerTest {
 
     private final static String REST_URL = MealRestController.REST_URL + "/";
+
+    @Autowired
+    protected MealService mealService;
 
     @Test
     public void testDelete() throws Exception {
