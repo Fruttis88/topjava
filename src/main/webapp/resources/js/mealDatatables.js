@@ -33,3 +33,7 @@ $(function () {
     });
     makeEditable();
 });
+
+function getAjaxUrl(){
+    return ajaxUrl + "filter?" + $('#filterForm').serialize();
+}

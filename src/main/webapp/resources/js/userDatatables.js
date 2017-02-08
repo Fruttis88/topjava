@@ -40,3 +40,7 @@ $(function () {
     });
     makeEditable();
 });
+
+function getAjaxUrl(){
+    return ajaxUrl;
+}

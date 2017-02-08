@@ -30,7 +30,7 @@ function deleteRow(id) {
 }
 
 function updateTable() {
-    $.get(ajaxUrl, function (data) {
+    $.get(getAjaxUrl(), function (data) {
         datatableApi.clear();
         $.each(data, function (key, item) {
             datatableApi.row.add(item);
@@ -51,6 +51,22 @@ function save() {
             successNoty('Saved');
         }
     });
+}
+
+//function filter() {
+//    var form = $('#filterForm');
+//    $.get(ajaxUrl + "filter?" + form.serialize(), function (data) {
+//        datatableApi.clear();
+//        $.each(data, function (key, item) {
+//            datatableApi.row.add(item);
+//        });
+//        datatableApi.draw();
+//    });
+//}
+
+function clean() {
+$('#filterForm')[0].reset();
+    updateTable();
 }
 
 var failedNote;
@@ -80,3 +96,5 @@ function failNoty(event, jqXHR, options, jsExc) {
         layout: 'bottomRight'
     });
 }
+
+
