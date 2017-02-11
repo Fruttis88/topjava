@@ -64,11 +64,6 @@ function save() {
 //    });
 //}
 
-function clean() {
-$('#filterForm')[0].reset();
-    updateTable();
-}
-
 var failedNote;
 
 function closeNoty() {

@@ -37,3 +37,8 @@ $(function () {
 function getAjaxUrl(){
     return ajaxUrl + "filter?" + $('#filterForm').serialize();
 }
+
+function clean() {
+    $('#filterForm')[0].reset();
+    updateTable();
+}
