@@ -94,3 +94,17 @@ function renderDeleteBtn(data, type, row) {
             '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>';
     }
 }
+
+$(function() {
+    $('#dateTime').datetimepicker({
+        format:'Y-m-d H:i',
+    });
+    $('#startDate, #endDate').datetimepicker({
+        timepicker:false,
+        format:'Y-m-d'
+    });
+    $('#startTime, #endTime').datetimepicker({
+        datepicker:false,
+        format:'H:i'
+    });
+});
