@@ -29,7 +29,7 @@ $(function () {
                 "data": "dateTime",
                 "render": function (date, type, row) {
                     if(type == 'display'){
-                        return '<span>' + date.substring(0, 10) + " " + date.substring(11, 19) + '</span>'
+                        return '<span>' + date.substring(0, 10) + " " + date.substring(11, 16) + '</span>'
                     }
                     return date;
                 }
