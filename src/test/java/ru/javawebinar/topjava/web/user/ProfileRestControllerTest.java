@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.web.user;
 
 import org.junit.Test;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.TestUtil;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
@@ -38,6 +39,7 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @Transactional
     public void testDelete() throws Exception {
         mockMvc.perform(delete(REST_URL)
                 .with(userHttpBasic(USER)))
@@ -46,6 +48,7 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @Transactional
     public void testUpdate() throws Exception {
         UserTo updatedTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword", 1500);
 
@@ -69,8 +72,6 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-
-    //ToDo
     @Test
     public void testUpdateDuplicate() throws Exception {
         UserTo updatedTo = new UserTo(USER_ID, "DuplicateEmail", ADMIN.getEmail(), "newPassword", 1500);

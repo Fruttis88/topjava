@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
@@ -64,6 +65,7 @@ public class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @Transactional
     public void testDelete() throws Exception {
         mockMvc.perform(delete(REST_URL + MEAL1_ID)
                 .with(userHttpBasic(USER)))
@@ -72,6 +74,7 @@ public class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @Transactional
     public void testUpdate() throws Exception {
         Meal updated = getUpdated();
 
@@ -85,6 +88,7 @@ public class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @Transactional
     public void testCreate() throws Exception {
         Meal created = getCreated();
         ResultActions action = mockMvc.perform(post(REST_URL)
