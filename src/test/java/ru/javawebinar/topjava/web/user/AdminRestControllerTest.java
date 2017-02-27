@@ -129,4 +129,30 @@ public class AdminRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
+
+
+    //ToDo
+    @Test
+    public void testUpdateWithDuplicateEmail() throws Exception{
+//        User user = new User(ADMIN_ID, "Admin2", "user@yandex.ru", "newPass", 4000, Role.ROLE_USER, Role.ROLE_ADMIN);
+        User user = new User(ADMIN);
+        user.setEmail(USER.getEmail());
+        mockMvc.perform(put(REST_URL + ADMIN_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(user))
+                .with(userHttpBasic(ADMIN)))
+                .andDo(print())
+                .andExpect(status().isConflict());
+    }
+
+    //ToDo
+    @Test
+    public void testCreateDuplicate() throws Exception {
+        User expected = new User(null, "New", USER.getEmail(), "newPass", 2300, Role.ROLE_USER, Role.ROLE_ADMIN);
+        mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(JsonUtil.writeValue(expected)))
+                .andExpect(status().isConflict());
+    }
 }

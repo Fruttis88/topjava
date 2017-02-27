@@ -3,6 +3,9 @@ package ru.javawebinar.topjava.web.user;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
@@ -21,6 +24,8 @@ public abstract class AbstractUserController {
 
     @Autowired
     private UserService service;
+    @Autowired
+    private MessageSource messageSource;
 
     public List<User> getAll() {
         log.info("getAll");
@@ -35,7 +40,11 @@ public abstract class AbstractUserController {
     public User create(User user) {
         checkNew(user);
         log.info("create " + user);
-        return service.save(user);
+        try {
+            return service.save(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException(messageSource.getMessage("exception.duplicate_email", null, LocaleContextHolder.getLocale()));
+        }
     }
 
     public void delete(int id) {
@@ -46,13 +55,21 @@ public abstract class AbstractUserController {
     public void update(User user, int id) {
         checkIdConsistent(user, id);
         log.info("update " + user);
-        service.update(user);
+        try {
+            service.update(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException(messageSource.getMessage("exception.duplicate_email", null, LocaleContextHolder.getLocale()));
+        }
     }
 
     public void update(UserTo userTo) {
         log.info("update " + userTo);
         checkIdConsistent(userTo, AuthorizedUser.id());
-        service.update(userTo);
+        try {
+            service.update(userTo);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException(messageSource.getMessage("exception.duplicate_email", null, LocaleContextHolder.getLocale()));
+        }
     }
 
     public User getByMail(String email) {

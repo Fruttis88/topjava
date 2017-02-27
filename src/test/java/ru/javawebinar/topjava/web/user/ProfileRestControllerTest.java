@@ -68,4 +68,17 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
+
+
+    //ToDo
+    @Test
+    public void testUpdateDuplicate() throws Exception {
+        UserTo updatedTo = new UserTo(USER_ID, "DuplicateEmail", ADMIN.getEmail(), "newPassword", 1500);
+
+        mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(USER))
+                .content(JsonUtil.writeValue(updatedTo)))
+                .andDo(print())
+                .andExpect(status().isConflict());
+    }
 }
