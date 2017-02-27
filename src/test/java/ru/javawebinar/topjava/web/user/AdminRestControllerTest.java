@@ -118,4 +118,15 @@ public class AdminRestControllerTest extends AbstractControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MATCHER.contentListMatcher(ADMIN, USER)));
     }
+
+    @Test
+    public void testUpdateInvalid() throws Exception{
+        User user = new User(ADMIN_ID, null, null, null, 11000, Role.ROLE_USER, Role.ROLE_ADMIN);
+        mockMvc.perform(put(REST_URL + ADMIN_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(user))
+                .with(userHttpBasic(ADMIN)))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
 }
